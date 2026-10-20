@@ -62,7 +62,9 @@ struct CarouselParallaxModifier: ViewModifier {
         } else {
             content
                 .visualEffect { effect, proxy in
-                    let frame = proxy.frame(in: .scrollView(axis: .horizontal))
+                    // Both rects in the layer's own coordinates: `bounds(of:)` gives the scroll
+                    // view's visible bounds there.
+                    let frame = CGRect(origin: .zero, size: proxy.size)
                     let viewport = proxy.bounds(of: .scrollView(axis: .horizontal)) ?? frame
                     // A layer only needs to keep covering its frame while its page is on screen,
                     // up to about one page from the center.
